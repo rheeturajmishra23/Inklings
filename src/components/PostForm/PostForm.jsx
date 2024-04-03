@@ -9,16 +9,16 @@ function PostForm({post}) {
 
     const {register, handleSubmit, watch, setValue, control, getValues} = useForm({
         defaultValues:{
-            title:post?.title || '',
-            slug:post?.slug || '',
-            content: post?.content || '',
-            status:post?.status || 'active'
+            title:post?.title || "",
+            slug:post?.slug || "",
+            content: post?.content || "",
+            status:post?.status || "active"
         }
-    })
+    });
 
     const navigate = useNavigate()
-    const userData = useSelector(state => state.user.userData)
-
+    const userData = useSelector(state => state.auth.userData)
+    console.log('userData: (in PostForm component) ', userData)
     const submit = async(data) => {
         if(post){
             const file = data.image[0] ? appwriteDbService.uploadFile(data.image[0]) : null
@@ -35,7 +35,7 @@ function PostForm({post}) {
                 navigate(`/post/${dbPost.$id}`)
             }
         } else {
-            const file = data.image[0] ? appwriteDbService.uploadFile(data.image[0]) : null
+            const file = await appwriteDbService.uploadFile(data.image[0])
             if(file){
                 const fileId = file.$id
                 data.featuredImage = fileId
@@ -63,8 +63,8 @@ function PostForm({post}) {
 
     React.useEffect(()=>{
         const subscription =  watch((value,{name})=>{
-            if(name === 'title') {
-                setValue('slug',slugTransform(value.title,{shouldValidate:true}))
+            if(name === "title") {
+                setValue("slug",slugTransform(value.title,{shouldValidate:true}))
             }
         })
 

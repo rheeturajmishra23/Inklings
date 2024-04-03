@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import authService from '../appwrite/auth'
 import {login as authLogin} from '../store/authSlice'
 import {Link,useNavigate} from 'react-router-dom'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {Button,Logo,Input} from './index'
 import {useForm} from 'react-hook-form'
 
@@ -12,6 +12,8 @@ function Login() {
     const dispatch = useDispatch()
     const [error,setError] = useState('')
     const {register, handleSubmit} = useForm()
+    const authSlice = useSelector((state) => state.auth)
+    console.log('authSlice: (in Login component(in components/Login.jsx)) ', authSlice)
 
     const login = async(data) => {
         setError("")
@@ -19,9 +21,11 @@ function Login() {
             const session = await authService.login(data)
             if(session){
                 const userData = await authService.getCurrentUser()
-                if(userData)
+                if(userData){
                     dispatch(authLogin(userData));
-                navigate('/')
+                    navigate('/')
+                }
+                    
             }
         } catch (error) {
             setError(error.message)

@@ -33,7 +33,11 @@ function App() {
         <Footer />
       </div>
     </div>
-  ) : null
+  ) : (
+    <div>
+      <h1>{loading}</h1>
+    </div>
+  )
 
 }
 
