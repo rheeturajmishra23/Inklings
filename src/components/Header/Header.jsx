@@ -5,9 +5,9 @@ import {Container,Logo,LogoutBtn} from "../index"
 
 function Header() {
 
-    const authStatus = useSelector((state)=>state.auth.state)
+    const authStatus = useSelector((state)=>state.auth.status)
     const navigate = useNavigate()
-
+    console.log("Auth status:",authStatus);
     const navItems = [
         {
             name: 'Home',
